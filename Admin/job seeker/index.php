@@ -16,7 +16,7 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- link css -->
-    <link rel="stylesheet" href="./approved.css">
+    <link rel="stylesheet" href="./approved1.css">
 </head>
 <body>
 <header class="header">
@@ -34,6 +34,7 @@
 						<li><a href="#" style="color: white;">Job seeker</a></li>
 						<li><a href="../../Admin/index.php">Recruiter</a></li>
 						<li><a href="../../Admin/skill_test/index.php">Skill Test</a></li>
+						<li><a href="../../Admin/trash_item/index.php">Trash</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -84,44 +85,27 @@
             </div>
             <div class="pending_request">
                 <div class="heasing">
-                    <h1>Pending Request .....</h1>
+                    
+                    <h1>Pending Request .....<button class="view_seeker" onclick="showSeeker()">View</button></h1>
+                    <div id="seeker_info"></div>
+                    
                 </div>
-                <!--table for pending request  -->
-                <div class="request">
-                    <table class="table table-bordered">
-                        <tr style="color:white; text-align:center;">
-                            <th>Job Seeker ID</th>
-                            <th>NAME</th>
-                            <th>Contact</th>
-                            <th>Approval</th>
-                            <th>Cancel</th>
-                        </tr>
-                        <?php
-                            $query = "SELECT * FROM `job_seeker` WHERE status = 'pending';";
-                            $result = mysqli_query($conn,$query);
-                            #$Pending = mysqli_fetch_array($result);
-                            if($result->num_rows>0){
-                                while($rd = mysqli_fetch_assoc($result)){
-                                    $job_seeker_id = $rd['job_seeker_id'];
-                                    $job_seeker_name = $rd['user_name'];
-                                    $contact = $rd['contact'];
-                        ?>
-                        <tr style="color:white; text-align:center;">
-                            <td><?php echo $job_seeker_id; ?></td>
-                            <td><?php echo $job_seeker_name; ?></td>
-                            <td><?php echo $contact; ?></td>
-                            <td><a href="approve.php?id=<?php echo $job_seeker_id; ?>"class="btn btn-info" name="approve">Approve</a></td>
-                            <td><a href="delete.php?id=<?php echo $job_seeker_id; ?>"class="btn btn-danger">Cancel</a></td>
-                        </tr>
-                        <?php
-                            }
-                        }
-                        ?>
-                    </table>
-                </div>
-                <!-- End table -->
             </div>
         </div>
     </div>
+    <script>
+    function showSeeker(){
+        var xmlhttp= new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+            if (this.readyState==4 && this.status==200) {
+                document.getElementById("seeker_info").innerHTML=this.responseText;
+            }
+        }
+
+        // Must change this path 
+        xmlhttp.open("GET","http://localhost/The_Hunt/Admin/job%20seeker/second_index.php",true);
+        xmlhttp.send();
+    }
+    </script>
 </body>
 </html>
