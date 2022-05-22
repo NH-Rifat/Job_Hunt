@@ -1,5 +1,7 @@
 <?php
-    require_once('../../db/dbh.php');
+    require_once('../../../db/dbh.php');
+    /*error_reporting(0);
+    ini_set('display_errors', 0);*/
 ?>
 
 
@@ -16,7 +18,7 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- link css -->
-    <link rel="stylesheet" href="./approve1.css">
+    <link rel="stylesheet" href="../../job seeker/approved.css">
 </head>
 <body>
 <header class="header">
@@ -25,15 +27,15 @@
 				<nav class="navbar">
 					<h2 class="logo">
 						<a href="#">
-							<img src="./images/ASSET-USER-ADMIN.png" alt="">
+							<img src="../images/ASSET-USER-ADMIN.png" alt="">
 						</a>
 					</h2>
 					<ul>
-						<li><a href="../../Admin/index.php">Home</a></li>
-						<li><a href="../../Admin/index.php">Profile</a></li>
-						<li><a href="../../Admin/index.php">Job seeker</a></li>
-						<li><a href="../../Admin/index.php">Recruiter</a></li>
-						<li><a href="../../Admin/recruiter/trash_item/index.php">Trash</a></li>
+						<li><a href="../../../Admin/index.php">Home</a></li>
+						<li><a href="../../../Admin/index.php">Profile</a></li>
+						<li><a href="../../../Admin/job seeker/index.php">Job seeker</a></li>
+						<li><a href="#" style="color: white;">Recruiter</a></li>
+						<li><a href="../../../Admin/skill_test/index.php">Skill Test</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -42,12 +44,12 @@
     <!-- End header -->
     <div class="wrapper">
         <div class="container">
-            <div class="profile_sec">
+            <div class="profile_sec" >
                 <div class="heading">
                     <h2>Admin</h2>
                 </div>
                 <div class="profile">
-                    <img src="../job seeker/images/undraw_male_avatar_323b.svg" alt="">
+                    <img src="../../job seeker/images/undraw_male_avatar_323b.svg" alt="">
                     <h2>MD.Hasan Rifat</h2>
                     <h3>Software Engineer</h3>
                 </div>
@@ -84,26 +86,44 @@
             </div>
             <div class="pending_request">
                 <div class="heasing">
-                    <h1>Pending Request .....<button class="view_recruiter" onclick="showRecruiter()">View</button></h1>
-                    <div id="recruiter_info"></div>
+                    <h1>Pending Request .....</h1>
                 </div>
+                <!--table for pending request  -->
+                <div class="request">
+                    <table class="table table-bordered">
+                        <tr style="color:white; text-align:center;">
+                            <th>Job Recruiter ID</th>
+                            <th>NAME</th>
+                            <th>Contact</th>
+                            <th>Approval</th>
+                            <th>Cancel</th>
+                        </tr>
+                        <?php
+                            $query = "SELECT * FROM `trash_item_recruiter`;";
+                            $result = mysqli_query($conn,$query);
+                            #$Pending = mysqli_fetch_array($result);
+                            if($result->num_rows>0){
+                                while($rd = mysqli_fetch_assoc($result)){
+                                    $recruiter_id = $rd['recruiter_id'];
+                                    $job_seeker_name = $rd['user_name'];
+                                    $contact = $rd['contact'];
+                        ?>
+                        <tr style="color:white; text-align:center;">
+                            <td><?php echo $recruiter_id; ?></td>
+                            <td><?php echo $job_seeker_name; ?></td>
+                            <td><?php echo $contact; ?></td>
+                            <td><a href="approve.php?id=<?php echo $recruiter_id; ?>"class="btn btn-info" name="approve">Approve</a></td>
+                            <td><a href="delete.php?id=<?php echo $recruiter_id; ?>"class="btn btn-danger">Cancel</a></td>
+                        </tr>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </table>
+                </div>
+                <!-- End table -->
             </div>
         </div>
     </div>
-    <script>
-    function showRecruiter(){
-        var xmlhttp= new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (this.readyState==4 && this.status==200) {
-                document.getElementById("recruiter_info").innerHTML=this.responseText;
-            }
-        }
-
-        // Must change this path 
-        xmlhttp.open("GET","http://localhost/The_Hunt/Admin/recruiter/second_index.php",true);
-        xmlhttp.send();
-    }
-    </script>
 </body>
 </html>
-
